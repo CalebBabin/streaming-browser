@@ -1,0 +1,12 @@
+{
+  "name": "Browser Sample",
+  "version": "1.1.0",
+  "scripts": {
+    "start": "electron ."
+  },
+  "main": "main.js",
+  "dependencies": {
+    "electron": "^5.0.4",
+    "electron-localshortcut": "^3.1.0"
+  }
+}
