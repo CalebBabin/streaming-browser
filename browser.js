@@ -51,11 +51,14 @@ function navigateTo(url) {
 
 	webview = document.createElement('webview');
 	initWebviewParams();
+
+	webview.addEventListener('did-navigate', ()=>{
+		document.querySelector('#location').value = webview.getURL();
+	})
 	
 	webview.addEventListener('dom-ready', (e)=>{
 
 		const contents = webview.getWebContents();
-		console.log(contents);
 
 		webview.getWebContents().on('before-input-event', (event, input) => {
 			if (input.type !== 'keyDown') {
