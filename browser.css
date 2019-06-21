@@ -27,6 +27,9 @@ input {
 	transition: transform 1s ease;
 }
 
+.controlsActive webview {
+	pointer-events: none;
+}
 .controlsActive .overlay {
 	transform: translateY(0%);
 }
