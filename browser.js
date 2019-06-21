@@ -53,6 +53,10 @@ function navigateTo(url) {
 	initWebviewParams();
 	
 	webview.addEventListener('dom-ready', (e)=>{
+
+		const contents = webview.getWebContents();
+		console.log(contents);
+
 		webview.getWebContents().on('before-input-event', (event, input) => {
 			if (input.type !== 'keyDown') {
 				return;
@@ -98,9 +102,13 @@ function resetExitedState() {
 	document.body.classList.remove('killed');
 }
 
+let debounceTimestamp = 0;
 function handleKeyDown(event) {
 	if (event.code === 'F12') {
-		document.body.classList.toggle('controlsActive');
+		if (Date.now() - debounceTimestamp > 5) {
+			document.body.classList.toggle('controlsActive');
+			debounceTimestamp = Date.now();
+		}
 	}
 }
 
