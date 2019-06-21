@@ -3,35 +3,17 @@ const initWebviewParams = () => {
 	webview.setAttribute('autoresize', 'true');
 }
 
+const homeURL = 'https://opl.io/test/3d-cubes-01';
+
 let isLoading = false;
 let webview = document.createElement('webview');
-initWebviewParams();
-webview.src = 'https://google.com/#homepage';
 
 window.addEventListener('load', function () {
 	document.body.appendChild(webview);
-	webview.getWebContents().on('before-input-event', (event, input) => {
-		if (input.type !== 'keyDown') {
-			return;
-		}
-	
-		// Create a fake KeyboardEvent from the data provided
-		const emulatedKeyboardEvent = new KeyboardEvent('keydown', {
-			code: input.code,
-			key: input.key,
-			shiftKey: input.shift,
-			altKey: input.alt,
-			ctrlKey: input.control,
-			metaKey: input.meta,
-			repeat: input.isAutoRepeat
-		});
-	
-		// do something with the event as before
-		handleKeyDown(emulatedKeyboardEvent);
-	});
+	navigateTo(homeURL);
 
 	document.querySelector('#home').onclick = function () {
-		navigateTo('https://google.com/');
+		navigateTo(homeURL);
 	};
 
 	document.querySelector('#reload').onclick = function () {
@@ -70,8 +52,28 @@ function navigateTo(url) {
 	webview = document.createElement('webview');
 	initWebviewParams();
 	
+	webview.addEventListener('dom-ready', (e)=>{
+		webview.getWebContents().on('before-input-event', (event, input) => {
+			if (input.type !== 'keyDown') {
+				return;
+			}
+		
+			// Create a fake KeyboardEvent from the data provided
+			const emulatedKeyboardEvent = new KeyboardEvent('keydown', {
+				code: input.code,
+				key: input.key,
+				shiftKey: input.shift,
+				altKey: input.alt,
+				ctrlKey: input.control,
+				metaKey: input.meta,
+				repeat: input.isAutoRepeat
+			});
+		
+			// do something with the event as before
+			handleKeyDown(emulatedKeyboardEvent);
+		});
+	})
 
-	console.log('navigating');
 	if (url.match(/:\/\//) !== null) {
 		webview.setAttribute('src', url);
 	} else {
@@ -82,7 +84,6 @@ function navigateTo(url) {
 }
 
 function handleExit(event) {
-	console.log(event.type);
 	document.body.classList.add('exited');
 	if (event.type == 'abnormal') {
 		document.body.classList.add('crashed');
@@ -98,7 +99,6 @@ function resetExitedState() {
 }
 
 function handleKeyDown(event) {
-	console.log(event.code);
 	if (event.code === 'F12') {
 		document.body.classList.toggle('controlsActive');
 	}
