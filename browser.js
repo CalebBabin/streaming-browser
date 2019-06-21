@@ -57,6 +57,9 @@ function navigateTo(url) {
 	})
 	
 	webview.addEventListener('dom-ready', (e)=>{
+		webview.setZoomLevel(1);
+		webview.setVisualZoomLevelLimits(1,1);
+		webview.setLayoutZoomLevelLimits(0,0);
 
 		const contents = webview.getWebContents();
 
