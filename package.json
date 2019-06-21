@@ -1,12 +1,55 @@
 {
-  "name": "Browser Sample",
-  "version": "1.1.0",
-  "scripts": {
-    "start": "electron ."
-  },
+  "name": "ScreenshareBrowser",
+  "productName": "ScreenshareBrowser",
+  "description": "A simple browser made specifically for screensharing",
+  "author": "AntiMatterTape",
+  "version": "0.1.0",
+  "private": true,
   "main": "main.js",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "screenshare-browser"
+          }
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build-js": "webpack",
+    "watch-js": "webpack --watch",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
   "dependencies": {
-    "electron": "^5.0.4",
-    "electron-localshortcut": "^3.1.0"
+    "electron-localshortcut": "^3.1.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "terser-webpack-plugin": "^1.3.0"
+  },
+  "devDependencies": {
+    "express": "^4.17.1",
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.0.2",
+    "gulp-webpack": "^1.5.0",
+    "noisejs": "^2.1.0",
+    "path": "^0.12.7",
+    "terser-webpack-plugin": "^1.3.0",
+    "webpack": "4.29.6",
+    "webpack-cli": "^3.3.2",
+    "webpack-stream": "^5.2.1",
+    "electron": "^5.0.2",
+    "electron-packager": "^13.1.1",
+    "@electron-forge/cli": "6.0.0-beta.39",
+    "@electron-forge/maker-deb": "6.0.0-beta.39",
+    "@electron-forge/maker-rpm": "6.0.0-beta.39",
+    "@electron-forge/maker-squirrel": "6.0.0-beta.39",
+    "@electron-forge/maker-zip": "6.0.0-beta.39"
   }
 }

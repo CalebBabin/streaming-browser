@@ -1,9 +1,16 @@
-let isLoading = false;
 
+const initWebviewParams = () => {
+	webview.setAttribute('autoresize', 'true');
+}
+
+let isLoading = false;
+let webview = document.createElement('webview');
+initWebviewParams();
+webview.src = 'https://google.com/#homepage';
 
 window.addEventListener('load', function () {
-	var iframe = document.querySelector('webview');
-	iframe.getWebContents().on('before-input-event', (event, input) => {
+	document.body.appendChild(webview);
+	webview.getWebContents().on('before-input-event', (event, input) => {
 		if (input.type !== 'keyDown') {
 			return;
 		}
@@ -24,14 +31,14 @@ window.addEventListener('load', function () {
 	});
 
 	document.querySelector('#home').onclick = function () {
-		navigateTo('https://opl.io/test/3d-cubes-01');
+		navigateTo('https://google.com/');
 	};
 
 	document.querySelector('#reload').onclick = function () {
 		if (isLoading) {
-			iframe.stop();
+			webview.stop();
 		} else {
-			iframe.reload();
+			webview.reload();
 		}
 	};
 	document.querySelector('#reload').addEventListener(
@@ -47,21 +54,31 @@ window.addEventListener('load', function () {
 		navigateTo(document.querySelector('#location').value);
 	};
 
-	iframe.addEventListener('close', handleExit);
-	iframe.addEventListener('did-start-loading', handleLoadStart);
-	iframe.addEventListener('did-stop-loading', handleLoadStop);
-	iframe.addEventListener('did-fail-load', handleLoadAbort);
-	iframe.addEventListener('did-get-redirect-request', handleLoadRedirect);
-	iframe.addEventListener('did-finish-load', handleLoadCommit);
+	webview.addEventListener('close', handleExit);
+	webview.addEventListener('did-start-loading', handleLoadStart);
+	webview.addEventListener('did-stop-loading', handleLoadStop);
+	webview.addEventListener('did-fail-load', handleLoadAbort);
+	webview.addEventListener('did-get-redirect-request', handleLoadRedirect);
+	webview.addEventListener('did-finish-load', handleLoadCommit);
 });
 
 function navigateTo(url) {
 	resetExitedState();
-	const iframe = document.querySelector('webview');
-	iframe.src = url;
+	//webview.src = url;
+	webview.parentElement.removeChild(webview);
 
-	const contents = iframe.getWebContents();
-	contents.executeJavaScript(`window.location.href = '${encodeURI(url)}'`)
+	webview = document.createElement('webview');
+	initWebviewParams();
+	
+
+	console.log('navigating');
+	if (url.match(/:\/\//) !== null) {
+		webview.setAttribute('src', url);
+	} else {
+		webview.setAttribute('src', 'http://'+ url);
+	}
+	
+	document.body.appendChild(webview);
 }
 
 function handleExit(event) {
@@ -89,8 +106,8 @@ function handleKeyDown(event) {
 
 function handleLoadCommit() {
 	resetExitedState();
-	var iframe = document.querySelector('webview');
-	document.querySelector('#location').value = iframe.getURL();
+	var webview = document.querySelector('webview');
+	document.querySelector('#location').value = webview.getURL();
 }
 
 function handleLoadStart(event) {

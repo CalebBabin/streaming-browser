@@ -15,12 +15,22 @@ app.on('ready', function () {
 		}
 	});
 
+	mainWindow.setMenuBarVisibility(false);
+
 	mainWindow.loadFile(__dirname + '/browser.html');
-	mainWindow.openDevTools();
 	electronLocalshortcut.register(mainWindow, 'F12', () => {
-		mainWindow.openDevTools();
-		// Open DevTools
 		mainWindow.webContents.executeJavaScript('document.body.classList.toggle("controlsActive")')
-		mainWindow.webContents.executeJavaScript('console.log("poop")')
+	});
+
+	let devtools = false;
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+Shift+I', () => {
+		devtools = !devtools;
+		if (devtools) {
+			mainWindow.setMenuBarVisibility(true);
+			mainWindow.openDevTools();
+		} else {
+			mainWindow.closeDevTools();
+			mainWindow.setMenuBarVisibility(false);
+		}
 	});
 });

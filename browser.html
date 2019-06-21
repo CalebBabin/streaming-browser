@@ -3,7 +3,7 @@
 
 <head>
 	<link rel="stylesheet" href="browser.css">
-	<script src="browser.js"></script>
+	<script src="browser.js" defer></script>
 </head>
 
 <body class="controlsActive">
@@ -15,19 +15,14 @@
 
 			<form id="location-form">
 				<div id="center-column">
-					<input id="location" type="text" value="https://opl.io/test/3d-cubes-01">
+					<input id="location" type="text" value="">
 				</div>
 				<input type="submit" value="Go">
 			</form>
 
-			<button id="zoom" title="Change Zoom">&#128270;</button>
-			<button id="find" title="Find in Page">&#128294;</button>
-
 		</div>
 
 	</div>
-
-	<webview src="https://opl.io/test/3d-cubes-01"></webview>
 
 	<div id="sad-webview">
 		<div id="sad-webview-icon">&#9762;</div>
