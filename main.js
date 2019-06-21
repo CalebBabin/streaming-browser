@@ -26,7 +26,7 @@ app.on('ready', function () {
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+Shift+I', () => {
 		devtools = !devtools;
 		if (devtools) {
-			mainWindow.setMenuBarVisibility(true);
+			//mainWindow.setMenuBarVisibility(true);
 			mainWindow.openDevTools();
 		} else {
 			mainWindow.closeDevTools();
