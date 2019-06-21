@@ -18,8 +18,13 @@ app.on('ready', function () {
 	mainWindow.setMenuBarVisibility(false);
 
 	mainWindow.loadFile(__dirname + '/browser.html');
+	
 	electronLocalshortcut.register(mainWindow, 'F12', () => {
-		mainWindow.webContents.executeJavaScript('document.body.classList.toggle("controlsActive")')
+		mainWindow.webContents.executeJavaScript('document.body.classList.toggle("controlsActive")');
+	});
+
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+M', () => {
+		mainWindow.webContents.executeJavaScript('toggleMute()');
 	});
 
 	let devtools = false;

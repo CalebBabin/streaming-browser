@@ -57,6 +57,10 @@ function navigateTo(url) {
 	})
 	
 	webview.addEventListener('dom-ready', (e)=>{
+		//Handle muted audio
+		webview.setAudioMuted(isMuted);
+
+		//Reset and set zoom levels
 		webview.setZoomLevel(1);
 		webview.setVisualZoomLevelLimits(1,1);
 		webview.setLayoutZoomLevelLimits(0,0);
@@ -152,4 +156,10 @@ function handleLoadAbort(event) {
 function handleLoadRedirect(event) {
 	resetExitedState();
 	document.querySelector('#location').value = event.newUrl;
+}
+
+let isMuted = false;
+const toggleMute = () => {
+	isMuted = !isMuted;
+	webview.setAudioMuted(isMuted);
 }
