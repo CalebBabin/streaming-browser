@@ -23,8 +23,10 @@ app.on('ready', function () {
 		mainWindow.webContents.executeJavaScript('document.body.classList.toggle("controlsActive")');
 	});
 
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+M', () => {
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+Shift+M', () => {
+		console.log('shortcut')
 		mainWindow.webContents.executeJavaScript('toggleMute()');
+		return false;
 	});
 
 	let devtools = false;
@@ -37,5 +39,6 @@ app.on('ready', function () {
 			mainWindow.closeDevTools();
 			mainWindow.setMenuBarVisibility(false);
 		}
+		return false;
 	});
 });

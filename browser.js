@@ -35,13 +35,6 @@ window.addEventListener('load', function () {
 		e.preventDefault();
 		navigateTo(document.querySelector('#location').value);
 	};
-
-	webview.addEventListener('close', handleExit);
-	webview.addEventListener('did-start-loading', handleLoadStart);
-	webview.addEventListener('did-stop-loading', handleLoadStop);
-	webview.addEventListener('did-fail-load', handleLoadAbort);
-	webview.addEventListener('did-get-redirect-request', handleLoadRedirect);
-	webview.addEventListener('did-finish-load', handleLoadCommit);
 });
 
 function navigateTo(url) {
@@ -87,6 +80,14 @@ function navigateTo(url) {
 			handleKeyDown(emulatedKeyboardEvent);
 		});
 	})
+	
+
+	webview.addEventListener('close', handleExit);
+	webview.addEventListener('did-start-loading', handleLoadStart);
+	webview.addEventListener('did-stop-loading', handleLoadStop);
+	webview.addEventListener('did-fail-load', handleLoadAbort);
+	webview.addEventListener('did-get-redirect-request', handleLoadRedirect);
+	webview.addEventListener('did-finish-load', handleLoadCommit);
 
 	if (url.match(/:\/\//) !== null) {
 		webview.setAttribute('src', url);
@@ -163,3 +164,35 @@ const toggleMute = () => {
 	isMuted = !isMuted;
 	webview.setAudioMuted(isMuted);
 }
+
+
+const timeElement = document.getElementById('time');
+const timeTick = ()=>{
+	window.requestAnimationFrame(timeTick);
+
+	const date = new Date();
+	let hour = date.getHours();
+	if (hour > 12) hour -= 12;
+
+	let minutes = String(date.getMinutes());
+	if (minutes.length === 1) minutes = '0'+minutes;
+
+	let seconds = String(date.getSeconds());
+	if (seconds.length === 1) seconds = '0'+seconds;
+
+	timeElement.textContent = `
+		${hour}:${minutes}:${seconds}
+	`;
+};
+window.requestAnimationFrame(timeTick);
+
+const fullScreenIcon = document.getElementById('fullscreenIcon');
+fullScreenIcon.addEventListener('click', (e)=>{
+	e.preventDefault();
+
+	if (!document.fullscreenElement)
+		document.body.requestFullscreen();
+	else {
+		document.exitFullscreen();
+	}
+});
