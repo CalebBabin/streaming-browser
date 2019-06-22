@@ -21,13 +21,18 @@ app.on('ready', function () {
 	
 	electronLocalshortcut.register(mainWindow, 'F12', () => {
 		mainWindow.webContents.executeJavaScript('document.body.classList.toggle("controlsActive")');
-	});
-
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+Shift+M', () => {
-		console.log('shortcut')
-		mainWindow.webContents.executeJavaScript('toggleMute()');
 		return false;
 	});
+	
+	electronLocalshortcut.register(mainWindow, 'F11', () => {
+		//mainWindow.webContents.executeJavaScript('toggleFullscreen()');
+		return false;
+	});
+
+	/*electronLocalshortcut.register(mainWindow, 'CommandOrControl+Shift+M', () => {
+		mainWindow.webContents.executeJavaScript('toggleMute()');
+		return false;
+	});*/
 
 	let devtools = false;
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+Shift+I', () => {

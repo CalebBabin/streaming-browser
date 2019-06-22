@@ -121,12 +121,19 @@ function resetExitedState() {
 }
 
 let debounceTimestamp = 0;
+let keyPressDebounce = false;
+
 function handleKeyDown(event) {
+
 	if (event.code === 'F12') {
-		if (Date.now() - debounceTimestamp > 5) {
-			document.body.classList.toggle('controlsActive');
-			debounceTimestamp = Date.now();
-		}
+		if (keyPressDebounce) return;
+		
+		keyPressDebounce = true;
+		window.requestAnimationFrame(()=>{
+			keyPressDebounce = false;
+		})
+
+		document.body.classList.toggle('controlsActive');
 	}
 }
 
@@ -201,15 +208,29 @@ const webviewExitFullscreen = () => {
 	isWebviewFullscreen = false;
 };
 
-const fullScreenIcon = document.getElementById('fullscreenIcon');
-fullScreenIcon.addEventListener('click', (e)=>{
-	e.preventDefault();
+
+let fullscreenDebounce = false;
+const toggleFullscreen = (e)=>{
+	if (fullscreenDebounce) return;
+	
+	fullscreenDebounce = true;
+	window.setTimeout(()=>{
+		fullscreenDebounce = false;
+	}, 500)
+
+	if(e && e.preventDefault)
+		e.preventDefault();
 
 	if (!document.fullscreenElement && !isWebviewFullscreen)
 		document.body.requestFullscreen();
 	else {
-		if (isWebviewFullscreen)
+		if (isWebviewFullscreen) {
+			isWebviewFullscreen = false;
 			webview.getWebContents().executeJavaScript(`document.exitFullscreen()`);
+		}
 		document.exitFullscreen();
 	}
-});
+};
+
+const fullScreenIcon = document.getElementById('fullscreenIcon');
+fullScreenIcon.addEventListener('click', toggleFullscreen);
