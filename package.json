@@ -1,7 +1,7 @@
 {
-  "name": "ScreenshareBrowser",
-  "productName": "ScreenshareBrowser",
-  "description": "A simple browser made specifically for screensharing",
+  "name": "StreamingBrowser",
+  "productName": "StreamingBrowser",
+  "description": "A simple browser made specifically for streaming / screensharing",
   "author": "AntiMatterTape",
   "version": "0.1.0",
   "private": true,
