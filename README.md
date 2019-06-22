@@ -14,3 +14,7 @@ On top of the custom tweaks, there's also no browser history, no user accounts, 
 And for now, the workaround to enable window capture on windows, is to right click the executable, then click > Properties > Compatibility > Run this program in Compatibility mode for: > Windows 8 > Ok.
 
 This workaround also works for other applications, going forward there may be a more streamlined workaround to enabling window capture, but until then this is the only way I've found so far.
+
+
+# State of the codebase
+Yes, it's messy. Really messy. I downloaded a kind of terrible example project as a starting point, and mostly hacked together features into it. I plan on fully restructuring the codebase in the future.
