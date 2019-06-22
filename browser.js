@@ -3,7 +3,7 @@ const initWebviewParams = () => {
 	webview.setAttribute('autoresize', 'true');
 }
 
-const homeURL = 'https://opl.io/test/3d-cubes-01';
+const homeURL = 'https://opl.io/random';
 
 let isLoading = false;
 let webview = document.createElement('webview');
@@ -37,6 +37,10 @@ window.addEventListener('load', function () {
 	};
 });
 
+const urlBarUpdate = () => {
+	document.querySelector('#location').value = webview.getURL();
+}
+
 function navigateTo(url) {
 	resetExitedState();
 	//webview.src = url;
@@ -45,9 +49,9 @@ function navigateTo(url) {
 	webview = document.createElement('webview');
 	initWebviewParams();
 
-	webview.addEventListener('did-navigate', ()=>{
-		document.querySelector('#location').value = webview.getURL();
-	})
+	webview.addEventListener('will-navigate', urlBarUpdate);
+	webview.addEventListener('did-navigate', urlBarUpdate);
+	webview.addEventListener('did-navigate-in-page', urlBarUpdate);
 	
 	webview.addEventListener('dom-ready', (e)=>{
 		//Handle muted audio
@@ -88,6 +92,9 @@ function navigateTo(url) {
 	webview.addEventListener('did-fail-load', handleLoadAbort);
 	webview.addEventListener('did-get-redirect-request', handleLoadRedirect);
 	webview.addEventListener('did-finish-load', handleLoadCommit);
+
+	webview.addEventListener('enter-html-full-screen', webviewFullscreen);
+	webview.addEventListener('leave-html-full-screen', webviewExitFullscreen);
 
 	if (url.match(/:\/\//) !== null) {
 		webview.setAttribute('src', url);
@@ -186,13 +193,23 @@ const timeTick = ()=>{
 };
 window.requestAnimationFrame(timeTick);
 
+let isWebviewFullscreen = false;
+const webviewFullscreen = () => {
+	isWebviewFullscreen = true;
+};
+const webviewExitFullscreen = () => {
+	isWebviewFullscreen = false;
+};
+
 const fullScreenIcon = document.getElementById('fullscreenIcon');
 fullScreenIcon.addEventListener('click', (e)=>{
 	e.preventDefault();
 
-	if (!document.fullscreenElement)
+	if (!document.fullscreenElement && !isWebviewFullscreen)
 		document.body.requestFullscreen();
 	else {
+		if (isWebviewFullscreen)
+			webview.getWebContents().executeJavaScript(`document.exitFullscreen()`);
 		document.exitFullscreen();
 	}
 });
